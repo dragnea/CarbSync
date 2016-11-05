@@ -11,6 +11,8 @@
 		6A0C11321DC91EE9007A63FD /* CSBluetoothController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0C11311DC91EE9007A63FD /* CSBluetoothController.m */; };
 		6A0C11371DC91F9C007A63FD /* CSVacuumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0C11361DC91F9C007A63FD /* CSVacuumView.m */; };
 		6A0C113A1DC91FB1007A63FD /* CSRSSIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0C11391DC91FB1007A63FD /* CSRSSIView.m */; };
+		6A21B77C1DCBC6450085BC63 /* CSAnimatableShapeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21B77B1DCBC6450085BC63 /* CSAnimatableShapeLayer.m */; };
+		6A21B77F1DCBCA530085BC63 /* CSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21B77E1DCBCA530085BC63 /* CSAdditions.m */; };
 		6A5189871D9AFBA700886D88 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5189861D9AFBA700886D88 /* main.m */; };
 		6A51898A1D9AFBA700886D88 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5189891D9AFBA700886D88 /* AppDelegate.m */; };
 		6A5189921D9AFBA700886D88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A5189911D9AFBA700886D88 /* Assets.xcassets */; };
@@ -18,9 +20,8 @@
 		6A51899F1D9AFBEB00886D88 /* MainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A51899D1D9AFBEB00886D88 /* MainVC.m */; };
 		6A5189A01D9AFBEB00886D88 /* MainVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A51899E1D9AFBEB00886D88 /* MainVC.xib */; };
 		6A5189A31D9AFDF200886D88 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5189A21D9AFDF200886D88 /* CoreBluetooth.framework */; };
+		6A6944E01DCE1A0E0066512D /* CSPacketDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6944DF1DCE1A0E0066512D /* CSPacketDecoder.m */; };
 		6A6DE24E1D9D99EC009E1121 /* VacuumGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6DE24D1D9D99EC009E1121 /* VacuumGaugeView.m */; };
-		6A7F9BF31D9C4ECD001F7124 /* RSSIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7F9BF21D9C4ECD001F7124 /* RSSIView.m */; };
-		6ABC746A1DC7C35A0048D582 /* PacketDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABC74691DC7C35A0048D582 /* PacketDecoder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,10 @@
 		6A0C11361DC91F9C007A63FD /* CSVacuumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSVacuumView.m; sourceTree = "<group>"; };
 		6A0C11381DC91FB1007A63FD /* CSRSSIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSRSSIView.h; sourceTree = "<group>"; };
 		6A0C11391DC91FB1007A63FD /* CSRSSIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSRSSIView.m; sourceTree = "<group>"; };
+		6A21B77A1DCBC6450085BC63 /* CSAnimatableShapeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAnimatableShapeLayer.h; sourceTree = "<group>"; };
+		6A21B77B1DCBC6450085BC63 /* CSAnimatableShapeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAnimatableShapeLayer.m; sourceTree = "<group>"; };
+		6A21B77D1DCBCA530085BC63 /* CSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAdditions.h; sourceTree = "<group>"; };
+		6A21B77E1DCBCA530085BC63 /* CSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAdditions.m; sourceTree = "<group>"; };
 		6A5189821D9AFBA700886D88 /* CarbSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarbSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A5189861D9AFBA700886D88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6A5189881D9AFBA700886D88 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -43,12 +48,10 @@
 		6A51899D1D9AFBEB00886D88 /* MainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainVC.m; sourceTree = "<group>"; };
 		6A51899E1D9AFBEB00886D88 /* MainVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainVC.xib; sourceTree = "<group>"; };
 		6A5189A21D9AFDF200886D88 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		6A6944DE1DCE1A0E0066512D /* CSPacketDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSPacketDecoder.h; sourceTree = "<group>"; };
+		6A6944DF1DCE1A0E0066512D /* CSPacketDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPacketDecoder.m; sourceTree = "<group>"; };
 		6A6DE24C1D9D99EC009E1121 /* VacuumGaugeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacuumGaugeView.h; sourceTree = "<group>"; };
 		6A6DE24D1D9D99EC009E1121 /* VacuumGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacuumGaugeView.m; sourceTree = "<group>"; };
-		6A7F9BF11D9C4ECD001F7124 /* RSSIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSIView.h; sourceTree = "<group>"; };
-		6A7F9BF21D9C4ECD001F7124 /* RSSIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSIView.m; sourceTree = "<group>"; };
-		6ABC74681DC7C35A0048D582 /* PacketDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketDecoder.h; sourceTree = "<group>"; };
-		6ABC74691DC7C35A0048D582 /* PacketDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketDecoder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +71,8 @@
 			children = (
 				6A0C112C1DC91EAF007A63FD /* CSSensor.h */,
 				6A0C112D1DC91EAF007A63FD /* CSSensor.m */,
+				6A6944DE1DCE1A0E0066512D /* CSPacketDecoder.h */,
+				6A6944DF1DCE1A0E0066512D /* CSPacketDecoder.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -88,6 +93,10 @@
 				6A0C11361DC91F9C007A63FD /* CSVacuumView.m */,
 				6A0C11381DC91FB1007A63FD /* CSRSSIView.h */,
 				6A0C11391DC91FB1007A63FD /* CSRSSIView.m */,
+				6A21B77A1DCBC6450085BC63 /* CSAnimatableShapeLayer.h */,
+				6A21B77B1DCBC6450085BC63 /* CSAnimatableShapeLayer.m */,
+				6A21B77D1DCBCA530085BC63 /* CSAdditions.h */,
+				6A21B77E1DCBCA530085BC63 /* CSAdditions.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -123,13 +132,9 @@
 				6A0C11331DC91F1E007A63FD /* Views */,
 				6A0C112F1DC91EC7007A63FD /* Controllers */,
 				6A0C112B1DC91E67007A63FD /* Models */,
-				6ABC74681DC7C35A0048D582 /* PacketDecoder.h */,
-				6ABC74691DC7C35A0048D582 /* PacketDecoder.m */,
 				6A51899C1D9AFBEB00886D88 /* MainVC.h */,
 				6A51899D1D9AFBEB00886D88 /* MainVC.m */,
 				6A51899E1D9AFBEB00886D88 /* MainVC.xib */,
-				6A7F9BF11D9C4ECD001F7124 /* RSSIView.h */,
-				6A7F9BF21D9C4ECD001F7124 /* RSSIView.m */,
 				6A6DE24C1D9D99EC009E1121 /* VacuumGaugeView.h */,
 				6A6DE24D1D9D99EC009E1121 /* VacuumGaugeView.m */,
 				6A5189881D9AFBA700886D88 /* AppDelegate.h */,
@@ -239,12 +244,13 @@
 				6A51899F1D9AFBEB00886D88 /* MainVC.m in Sources */,
 				6A0C11371DC91F9C007A63FD /* CSVacuumView.m in Sources */,
 				6A0C11321DC91EE9007A63FD /* CSBluetoothController.m in Sources */,
-				6ABC746A1DC7C35A0048D582 /* PacketDecoder.m in Sources */,
+				6A6944E01DCE1A0E0066512D /* CSPacketDecoder.m in Sources */,
 				6A0C112E1DC91EAF007A63FD /* CSSensor.m in Sources */,
-				6A7F9BF31D9C4ECD001F7124 /* RSSIView.m in Sources */,
+				6A21B77F1DCBCA530085BC63 /* CSAdditions.m in Sources */,
 				6A0C113A1DC91FB1007A63FD /* CSRSSIView.m in Sources */,
 				6A51898A1D9AFBA700886D88 /* AppDelegate.m in Sources */,
 				6A5189871D9AFBA700886D88 /* main.m in Sources */,
+				6A21B77C1DCBC6450085BC63 /* CSAnimatableShapeLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
