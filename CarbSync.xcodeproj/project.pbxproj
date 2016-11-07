@@ -37,6 +37,7 @@
 		6A21B77B1DCBC6450085BC63 /* CSAnimatableShapeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAnimatableShapeLayer.m; sourceTree = "<group>"; };
 		6A21B77D1DCBCA530085BC63 /* CSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAdditions.h; sourceTree = "<group>"; };
 		6A21B77E1DCBCA530085BC63 /* CSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAdditions.m; sourceTree = "<group>"; };
+		6A2A69C61DD1076300A942C2 /* CSPacket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSPacket.h; sourceTree = "<group>"; };
 		6A5189821D9AFBA700886D88 /* CarbSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarbSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A5189861D9AFBA700886D88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6A5189881D9AFBA700886D88 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		6A0C112B1DC91E67007A63FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6A2A69C61DD1076300A942C2 /* CSPacket.h */,
 				6A0C112C1DC91EAF007A63FD /* CSSensor.h */,
 				6A0C112D1DC91EAF007A63FD /* CSSensor.m */,
 				6A6944DE1DCE1A0E0066512D /* CSPacketDecoder.h */,

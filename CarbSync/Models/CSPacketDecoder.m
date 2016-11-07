@@ -28,14 +28,52 @@ const Byte TFESC = 0x84;
     int rx_state;
     int rx_index;
     int rx_size;
-    NSMutableArray *processingData;
+    NSMutableArray *data;
+    NSMutableDictionary *registeredPackets;
 }
+
+- (void)registerPacketClass:(Class<CSPacketProtocol>)packet {
+    [registeredPackets setObject:packet forKey:[NSNumber numberWithInteger:[packet command]]];
+}
+
+- (void)addByte:(Byte)byte {
+    if (rx_state == 0) {
+        if (rx_size != 0) {
+            return;
+        }
+        if (byte == FIBEGIN) {
+            rx_state = 1;
+            rx_index = 0;
+        }
+    } else {
+        if (byte == FIOEND) {
+            rx_state = 0;
+            rx_size = rx_index;
+            [self processAvailableData];
+        } else if (rx_index >= BUFFER_SIZE) {
+            rx_state = 0;
+            [self sendErrorCode:CSPacketDecoderErrorCode_bufferOverflow];
+        } else {
+            rx_buffer[rx_index++] = byte;
+        }
+    }
+}
+
+#pragma mark - private methods
 
 - (id)init {
     if (self = [super init]) {
-        processingData = [NSMutableArray array];
+        data = [NSMutableArray array];
+        registeredPackets = [NSMutableDictionary dictionary];
     }
     return self;
+}
+
+- (void)sendErrorCode:(NSInteger)errorCode {
+    if ([self.delegate respondsToSelector:@selector(packetDecoder:error:)]) {
+        NSError *error = [NSError errorWithDomain:CSPacketDecodedErrorDomain code:errorCode userInfo:nil];
+        [self.delegate packetDecoder:self error:error];
+    }
 }
 
 - (Byte)popBufferByte {
@@ -59,42 +97,16 @@ const Byte TFESC = 0x84;
 
 - (void)processAvailableData {
     rx_index = 0;
-    [processingData removeAllObjects];
-    _command = [self popBufferByte];
+    [data removeAllObjects];
+    CSPacketCommand command = [self popBufferByte];
     while (rx_index < rx_size) {
-        [processingData addObject:[NSNumber numberWithInt:[self popBufferByte]]];
+        [data addObject:[NSNumber numberWithInt:[self popBufferByte]]];
     }
-    _data = [processingData copy];
     rx_size = 0;
     
-    if ([self.delegate respondsToSelector:@selector(packetDecoderAvailableData:)]) {
-        [self.delegate packetDecoderAvailableData:self];
-    }
-}
-
-- (void)addByte:(Byte)byte {
-    if (rx_state == 0) {
-        if (rx_size != 0) {
-            return;
-        }
-        if (byte == FIBEGIN) {
-            rx_state = 1;
-            rx_index = 0;
-        }
-    } else {
-        if (byte == FIOEND) {
-            rx_state = 0;
-            rx_size = rx_index;
-            [self processAvailableData];
-        } else if (rx_index >= BUFFER_SIZE) {
-            rx_state = 0;
-            if ([self.delegate respondsToSelector:@selector(packetDecoder:error:)]) {
-                NSError *error = [NSError errorWithDomain:CSPacketDecodedErrorDomain code:CSPacketDecoderErrorCode_bufferOverflow userInfo:nil];
-                [self.delegate packetDecoder:self error:error];
-            }
-        } else {
-            rx_buffer[rx_index++] = byte;
-        }
+    id<CSPacketProtocol>packet = [registeredPackets objectForKey:[NSNumber numberWithInteger:command]];[packet setData:data];
+    if ([self.delegate respondsToSelector:@selector(packetDecoder:packetUpdated:command:)]) {
+        [self.delegate packetDecoder:self packetUpdated:packet command:command];
     }
 }
 
