@@ -28,7 +28,6 @@ const Byte TFESC = 0x84;
     int rx_state;
     int rx_index;
     int rx_size;
-    NSMutableArray *data;
     NSMutableDictionary *registeredPackets;
 }
 
@@ -63,7 +62,6 @@ const Byte TFESC = 0x84;
 
 - (id)init {
     if (self = [super init]) {
-        data = [NSMutableArray array];
         registeredPackets = [NSMutableDictionary dictionary];
     }
     return self;
@@ -97,16 +95,16 @@ const Byte TFESC = 0x84;
 
 - (void)processAvailableData {
     rx_index = 0;
-    [data removeAllObjects];
+    NSMutableArray *data = [NSMutableArray array];
     CSPacketCommand command = [self popBufferByte];
     while (rx_index < rx_size) {
         [data addObject:[NSNumber numberWithInt:[self popBufferByte]]];
     }
     rx_size = 0;
     
-    id<CSPacketProtocol>packet = [registeredPackets objectForKey:[NSNumber numberWithInteger:command]];[packet setData:data];
-    if ([self.delegate respondsToSelector:@selector(packetDecoder:packetUpdated:command:)]) {
-        [self.delegate packetDecoder:self packetUpdated:packet command:command];
+    Class<CSPacketProtocol>packet = [registeredPackets objectForKey:[NSNumber numberWithInteger:command]];
+    if ([self.delegate respondsToSelector:@selector(packetDecoder:packetUpdated:data:command:)]) {
+        [self.delegate packetDecoder:self packetUpdated:packet data:data command:command];
     }
 }
 

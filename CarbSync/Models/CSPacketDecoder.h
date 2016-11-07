@@ -15,7 +15,7 @@ extern NSInteger const CSPacketDecoderErrorCode_bufferOverflow;
 @class CSPacketDecoder;
 
 @protocol CSPacketDecoderDelegate <NSObject>
-- (void)packetDecoder:(CSPacketDecoder *)packetDecoder packetUpdated:(id<CSPacketProtocol>)packet command:(CSPacketCommand)command;
+- (void)packetDecoder:(CSPacketDecoder *)packetDecoder packetUpdated:(Class<CSPacketProtocol>)packet data:(NSArray <NSNumber *>*)data command:(CSPacketCommand)command;
 - (void)packetDecoder:(CSPacketDecoder *)packetDecoder error:(NSError *)error;
 @end
 
