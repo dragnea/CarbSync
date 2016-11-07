@@ -8,6 +8,9 @@
 
 #import "CSPacketDecoder.h"
 
+NSErrorDomain const CSPacketDecodedErrorDomain = @"CSPacketDecoderErrorDomain";
+NSInteger const CSPacketDecoderErrorCode_bufferOverflow = -1;
+
 const int BUFFER_SIZE = 20;
 
 const Byte FOBEGIN = 0x21;       // '!' indicates beginning of the ingoing packet
@@ -25,6 +28,14 @@ const Byte TFESC = 0x84;
     int rx_state;
     int rx_index;
     int rx_size;
+    NSMutableArray *processingData;
+}
+
+- (id)init {
+    if (self = [super init]) {
+        processingData = [NSMutableArray array];
+    }
+    return self;
 }
 
 - (Byte)popBufferByte {
@@ -46,20 +57,19 @@ const Byte TFESC = 0x84;
     }
 }
 
-- (int)popBufferInt {
-    return ([self popBufferByte] << 8) + [self popBufferByte];
-}
-
 - (void)processAvailableData {
     rx_index = 0;
-    NSMutableArray *data = [NSMutableArray array];
+    [processingData removeAllObjects];
     _command = [self popBufferByte];
     while (rx_index < rx_size) {
-        [data addObject:[NSNumber numberWithInt:[self popBufferByte]]];
+        [processingData addObject:[NSNumber numberWithInt:[self popBufferByte]]];
     }
-    _data = data;
+    _data = [processingData copy];
     rx_size = 0;
-    _isDataAvailable = YES;
+    
+    if ([self.delegate respondsToSelector:@selector(packetDecoderAvailableData:)]) {
+        [self.delegate packetDecoderAvailableData:self];
+    }
 }
 
 - (void)addByte:(Byte)byte {
@@ -78,6 +88,10 @@ const Byte TFESC = 0x84;
             [self processAvailableData];
         } else if (rx_index >= BUFFER_SIZE) {
             rx_state = 0;
+            if ([self.delegate respondsToSelector:@selector(packetDecoder:error:)]) {
+                NSError *error = [NSError errorWithDomain:CSPacketDecodedErrorDomain code:CSPacketDecoderErrorCode_bufferOverflow userInfo:nil];
+                [self.delegate packetDecoder:self error:error];
+            }
         } else {
             rx_buffer[rx_index++] = byte;
         }
