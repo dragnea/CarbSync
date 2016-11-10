@@ -6,8 +6,23 @@
 //  Copyright © 2016 Dragnea Mihai. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "CSPacket.h"
 
-@interface CSSensor : NSObject
+typedef NS_ENUM(NSInteger, CSSensorUnit) {
+    CSSensorUnit_kPa
+};
+
+typedef struct CSSensorValues {
+    float minValue;
+    float nominalValue;
+    float desiredValue;
+    float maxValue;
+} CSSensorValues;
+
+@interface CSSensor : NSObject<CSPacketProtocol>
+@property (nonatomic) CSSensorUnit unit;
+@property (nonatomic, readonly) CSSensorValues values;
+
+- (id)initWithUnit:(CSSensorUnit)unit;
 
 @end

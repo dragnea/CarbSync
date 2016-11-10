@@ -10,4 +10,19 @@
 
 @implementation CSSensor
 
++ (CSPacketCommand)command {
+    return 's';
+}
+
+- (void)setData:(NSArray<NSNumber *> *)data {
+    
+}
+
+- (id)initWithUnit:(CSSensorUnit)unit {
+    if (self = [super init]) {
+        _unit = unit;
+    }
+    return self;
+}
+
 @end

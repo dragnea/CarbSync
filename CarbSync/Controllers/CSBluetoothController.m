@@ -64,13 +64,23 @@ static NSString *CHARACTERISTIC_RXTX_UUID = @"FFE1";
     } else {
         // TODO: send 'failed to connect' with description
     }
+    [self scanForPeripherals];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     if (!error) {
         // TODO: cleanup
+        [self scanForPeripherals];
     } else {
         // TODO: send 'failed to disconnect' with description
+    }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error {
+    if (!error) {
+        _rssi = RSSI;
+    } else {
+        // TODO: handle RSSI read error
     }
 }
 
@@ -101,10 +111,39 @@ static NSString *CHARACTERISTIC_RXTX_UUID = @"FFE1";
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     if (!error) {
-        
+        if ([characteristic.UUID.UUIDString.uppercaseString isEqualToString:CHARACTERISTIC_RXTX_UUID]) {
+            Byte *byte;
+            for (NSInteger bytePos = 0; bytePos < characteristic.value.length; bytePos++) {
+                [characteristic.value getBytes:&byte range:NSMakeRange(bytePos, 1)];
+                // TODO: handle byte
+            }
+        }
     } else {
         // TODO: handle RX value error
     }
+}
+
+- (void)cleanup {
+    if (self.uartPeripheral.state != CBPeripheralStateConnected) {
+        return;
+    }
+    
+    if (self.uartPeripheral.services != nil) {
+        for (CBService *service in self.uartPeripheral.services) {
+            if (service.characteristics != nil) {
+                for (CBCharacteristic *characteristic in service.characteristics) {
+                    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_RXTX_UUID]]) {
+                        if (characteristic.isNotifying) {
+                            [self.uartPeripheral setNotifyValue:NO forCharacteristic:characteristic];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // If we've got this far, we're connected, but we're not subscribed, so we just disconnect
+    [self.centralManager cancelPeripheralConnection:self.uartPeripheral];
 }
 
 #pragma mark - Public methods

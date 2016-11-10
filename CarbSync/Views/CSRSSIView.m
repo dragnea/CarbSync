@@ -15,13 +15,18 @@
     [self setNeedsDisplay];
 }
 
+- (void)setStatus:(CSRSSIStatus)status {
+    _status = status;
+    [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     NSInteger rssi = [self.rssi integerValue];
     NSInteger bars;
     
-    if (!self.rssi || rssi == 0) {
+    if (rssi == 0) {
         bars = 0; // > 16m or no signal
     } else if (rssi < -64) {
         bars = 1; // 16m
@@ -47,6 +52,31 @@
             CGContextSetFillColorWithColor(context, [UIColor lightGrayColor].CGColor);
         }
         CGContextFillRect(context, CGRectMake(bar * barWidth, barHeightHalf - bar * barHeightInterval, barWidth - [UIScreen mainScreen].scale, barHeightHalf + bar * barHeightInterval));
+    }
+    
+    switch (self.status) {
+        case CSRSSIStatus_active:
+            
+            break;
+        case CSRSSIStatus_scaning:
+            
+            break;
+        case CSRSSIStatus_connecting:
+            
+            break;
+        case CSRSSIStatus_connected:
+            
+            break;
+            
+        case CSRSSIStatus_inactive:
+        default:
+            CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+            CGContextMoveToPoint(context, 0.0, 0.0);
+            CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+            CGContextMoveToPoint(context, rect.size.width, 0.0);
+            CGContextAddLineToPoint(context, 0.0, rect.size.height);
+            CGContextStrokePath(context);
+            break;
     }
     
 }

@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CSVacuumView : UIView
+@property (nonatomic, strong, readonly) UILabel *indexLabel;
+@property (nonatomic, strong, readonly) UILabel *valueLabel;
+
+- (void)updateMinValue:(CGFloat)minValue value:(CGFloat)value desiredValue:(CGFloat)desiredValue maxValue:(CGFloat)maxValue;
 
 @end

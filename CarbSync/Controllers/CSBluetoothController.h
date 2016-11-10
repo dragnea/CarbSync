@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, CSBluetoothControllerState) {
 @end
 
 @interface CSBluetoothController : NSObject
+@property (nonatomic, strong, readonly) NSNumber *rssi;
 @property (nonatomic, assign, readonly) CSBluetoothControllerState state;
 @property (nonatomic, weak) id<CSBluetoothControllerDelegate>delegate;
 
