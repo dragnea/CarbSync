@@ -21,8 +21,8 @@ typedef struct CSSensorValues {
 
 @interface CSSensor : NSObject<CSPacketProtocol>
 @property (nonatomic) CSSensorUnit unit;
-@property (nonatomic, readonly) CSSensorValues values;
 
 - (id)initWithUnit:(CSSensorUnit)unit;
+- (CSSensorValues)sensorValuesAtIndex:(NSInteger)index;
 
 @end

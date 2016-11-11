@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+IB_DESIGNABLE
 @interface CSVacuumView : UIView
 @property (nonatomic, strong, readonly) UILabel *indexLabel;
 @property (nonatomic, strong, readonly) UILabel *valueLabel;

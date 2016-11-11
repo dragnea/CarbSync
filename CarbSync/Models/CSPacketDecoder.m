@@ -90,14 +90,15 @@ const Byte TFESC = 0x84;
 
 - (void)processAvailableData {
     rx_index = 0;
-    NSMutableArray *data = [NSMutableArray array];
     CSPacketCommand command = [self popBufferByte];
+    int packetSize = 0;
+    Byte bytes[BUFFER_SIZE];
     while (rx_index < rx_size) {
-        [data addObject:[NSNumber numberWithInt:[self popBufferByte]]];
+        bytes[packetSize++] = [self popBufferByte];
     }
     rx_size = 0;
     id<CSPacketProtocol>packet = [self.delegate packetDecoder:self packetWithCommand:command];
-    [packet setData:data];
+    [packet setBytes:bytes count:packetSize];
     [self.delegate packetDecoder:self packetUpdated:packet command:command];
 }
 

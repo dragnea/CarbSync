@@ -67,12 +67,13 @@
     _indexLabel.textColor = [UIColor darkGrayColor];
     _indexLabel.font = [UIFont boldSystemFontOfSize:20.0];
     _indexLabel.backgroundColor = [UIColor clearColor];
+    _indexLabel.text = [NSNumber numberWithInteger:self.tag + 1].stringValue;
     [self addSubview:_indexLabel];
     
     _valueLabel = [[UILabel alloc] init];
     _valueLabel.textAlignment = NSTextAlignmentCenter;
     _valueLabel.textColor = [UIColor blackColor];
-    _valueLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    _valueLabel.font = [UIFont systemFontOfSize:15.0];
     _valueLabel.backgroundColor = [UIColor clearColor];
     _valueLabel.minimumScaleFactor = 0.5;
     _valueLabel.adjustsFontSizeToFitWidth = YES;

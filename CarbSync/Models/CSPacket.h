@@ -13,6 +13,6 @@
 typedef Byte CSPacketCommand;
 
 + (CSPacketCommand)command;
-- (void)setData:(NSArray <NSNumber *>*)data;
+- (void)setBytes:(Byte *)bytes count:(int)count;
 
 @end

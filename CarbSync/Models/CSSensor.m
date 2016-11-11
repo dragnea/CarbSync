@@ -8,14 +8,29 @@
 
 #import "CSSensor.h"
 
-@implementation CSSensor
+@implementation CSSensor {
+    CSSensorValues sensorValues[4];
+}
 
 + (CSPacketCommand)command {
     return 's';
 }
 
-- (void)setData:(NSArray<NSNumber *> *)data {
-    
+- (void)setBytes:(Byte *)bytes count:(int)count {
+    if (count != 8) {
+        // malformed packet
+    } else {
+        CSSensorValues sensor;
+        int16_t value;
+        for (int s = 0; s < 4; s++) {
+            
+            value = bytes[s * 2] << 8 | bytes[s * 2 + 1];
+            sensor = sensorValues[s];
+            
+            sensor.nominalValue = value;
+            
+        }
+    }
 }
 
 - (id)initWithUnit:(CSSensorUnit)unit {
@@ -23,6 +38,10 @@
         _unit = unit;
     }
     return self;
+}
+
+- (CSSensorValues)sensorValuesAtIndex:(NSInteger)index {
+    return sensorValues[index];
 }
 
 @end

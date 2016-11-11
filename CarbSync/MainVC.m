@@ -21,6 +21,7 @@
 @property (nonatomic, strong) CSBluetoothController *bluetoothControler;
 @property (nonatomic, strong) CSPacketDecoder *packetDecoder;
 @property (nonatomic, strong) CSSensor *sensors;
+@property (nonatomic, strong) CADisplayLink *displayLink;
 @end
 
 @implementation MainVC
@@ -36,10 +37,8 @@
     _packetDecoder = [[CSPacketDecoder alloc] init];
     _packetDecoder.delegate = self;
     
-    for (CSVacuumView *vacuumGauge in self.vacuumGauges) {
-        vacuumGauge.indexLabel.text = [NSString stringWithFormat:@"%d", (int)vacuumGauge.tag];
-        vacuumGauge.valueLabel.text = [NSString stringWithFormat:@"%dkPa", (int)arc4random_uniform(115)];
-    }
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkTick:)];
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
 
@@ -90,12 +89,19 @@
 
 - (void)packetDecoder:(CSPacketDecoder *)packetDecoder packetUpdated:(id<CSPacketProtocol>)packet command:(CSPacketCommand)command {
     if (command == [CSSensor command]) {
-        // sensors updated
+        
     }
 }
 
 - (void)packetDecoder:(CSPacketDecoder *)packetDecoder error:(NSError *)error {
     
+}
+
+- (void)displayLinkTick:(CADisplayLink *)displayLink {
+    for (CSVacuumView *vacuumGauge in self.vacuumGauges) {
+        CSSensorValues values = [self.sensors sensorValuesAtIndex:vacuumGauge.tag];
+        [vacuumGauge updateMinValue:values.minValue value:values.nominalValue desiredValue:values.desiredValue maxValue:values.maxValue];
+    }
 }
 
 @end
