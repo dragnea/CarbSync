@@ -50,14 +50,14 @@
     
     _indicatorLayer = [CSAnimatableShapeLayer layer];
     _indicatorLayer.fillColor = [UIColor colorWithRed:0.8 green:0.0 blue:0.0 alpha:0.5].CGColor;
-    CGPathRef indicatorPath = CGPathCreateWithRect(CGRectMake(_contentRect.origin.x, _contentRect.origin.y, _contentRect.size.width, 4.0), NULL);
+    CGPathRef indicatorPath = CGPathCreateWithRect(CGRectMake(_contentRect.origin.x, _contentRect.origin.y - 2.0, _contentRect.size.width, 4.0), NULL);
     _indicatorLayer.path = indicatorPath;
     CGPathRelease(indicatorPath);
     [self.layer addSublayer:_indicatorLayer];
     
     _desiredIndicatorLayer = [CSAnimatableShapeLayer layer];
     _desiredIndicatorLayer.fillColor = [UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:0.5].CGColor;
-    CGPathRef desiredIndicatorPath = CGPathCreateWithRect(CGRectMake(_contentRect.origin.x + 2.0, _contentRect.origin.y, _contentRect.size.width - 4.0, 2.0), NULL);
+    CGPathRef desiredIndicatorPath = CGPathCreateWithRect(CGRectMake(_contentRect.origin.x + 2.0, _contentRect.origin.y - 1.0, _contentRect.size.width - 4.0, 2.0), NULL);
     _desiredIndicatorLayer.path = desiredIndicatorPath;
     CGPathRelease(desiredIndicatorPath);
     [self.layer addSublayer:_desiredIndicatorLayer];

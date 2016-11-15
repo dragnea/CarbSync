@@ -23,6 +23,7 @@ const int16_t kMaxSensorValue = 946 - kMinSensorValue;
     if (count != 8) {
         // malformed packet
     } else {
+        // load values
         float values[4];
         float mediumValue = 0.0f;
         for (int s = 0; s < 4; s++) {
@@ -32,6 +33,7 @@ const int16_t kMaxSensorValue = 946 - kMinSensorValue;
             mediumValue += values[s];
         }
         
+        // process values
         mediumValue = mediumValue / 4.0f;
         for (int s = 0; s < 4; s++) {
             
