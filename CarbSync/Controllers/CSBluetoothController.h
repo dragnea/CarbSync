@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, CSBluetoothControllerState) {
     CSBluetoothControllerStateUnauthorized,
     CSBluetoothControllerStatePoweredOff,
     CSBluetoothControllerStatePoweredOn,
+    CSBluetoothControllerStateConnected
 };
 
 @class CSBluetoothController;

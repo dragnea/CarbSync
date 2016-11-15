@@ -21,6 +21,7 @@
 		6A5189A01D9AFBEB00886D88 /* MainVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A51899E1D9AFBEB00886D88 /* MainVC.xib */; };
 		6A5189A31D9AFDF200886D88 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5189A21D9AFDF200886D88 /* CoreBluetooth.framework */; };
 		6A6944E01DCE1A0E0066512D /* CSPacketDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6944DF1DCE1A0E0066512D /* CSPacketDecoder.m */; };
+		6A7C89FE1DDA397D00B837DC /* CSVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7C89FD1DDA397D00B837DC /* CSVersion.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,8 @@
 		6A5189A21D9AFDF200886D88 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		6A6944DE1DCE1A0E0066512D /* CSPacketDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSPacketDecoder.h; sourceTree = "<group>"; };
 		6A6944DF1DCE1A0E0066512D /* CSPacketDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSPacketDecoder.m; sourceTree = "<group>"; };
+		6A7C89FC1DDA397D00B837DC /* CSVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSVersion.h; sourceTree = "<group>"; };
+		6A7C89FD1DDA397D00B837DC /* CSVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSVersion.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +73,8 @@
 				6A2A69C61DD1076300A942C2 /* CSPacket.h */,
 				6A0C112C1DC91EAF007A63FD /* CSSensor.h */,
 				6A0C112D1DC91EAF007A63FD /* CSSensor.m */,
+				6A7C89FC1DDA397D00B837DC /* CSVersion.h */,
+				6A7C89FD1DDA397D00B837DC /* CSVersion.m */,
 				6A6944DE1DCE1A0E0066512D /* CSPacketDecoder.h */,
 				6A6944DF1DCE1A0E0066512D /* CSPacketDecoder.m */,
 			);
@@ -246,6 +251,7 @@
 				6A0C113A1DC91FB1007A63FD /* CSRSSIView.m in Sources */,
 				6A51898A1D9AFBA700886D88 /* AppDelegate.m in Sources */,
 				6A5189871D9AFBA700886D88 /* main.m in Sources */,
+				6A7C89FE1DDA397D00B837DC /* CSVersion.m in Sources */,
 				6A21B77C1DCBC6450085BC63 /* CSAnimatableShapeLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,11 +365,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 325S6ZZ44V;
 				INFOPLIST_FILE = CarbSync/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mihaidragnea.CarbSync;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -372,11 +381,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 325S6ZZ44V;
 				INFOPLIST_FILE = CarbSync/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mihaidragnea.CarbSync;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

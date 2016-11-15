@@ -15,8 +15,8 @@ static NSString *CHARACTERISTIC_RXTX_UUID = @"FFE1";
 
 @interface CSBluetoothController ()<CBCentralManagerDelegate, CBPeripheralDelegate>
 @property (nonatomic, strong) CBCentralManager *centralManager;
-@property (nonatomic, weak) CBPeripheral *uartPeripheral;
-@property (nonatomic, weak) CBCharacteristic *rxtxCharacteristic;
+@property (nonatomic, strong) CBPeripheral *uartPeripheral;
+@property (nonatomic, strong) CBCharacteristic *rxtxCharacteristic;
 @end
 
 @implementation CSBluetoothController
@@ -36,24 +36,25 @@ static NSString *CHARACTERISTIC_RXTX_UUID = @"FFE1";
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
     _state = (CSBluetoothControllerState)central.state;
-    if ([self.delegate respondsToSelector:@selector(bluetoothControllerDidUpdateState:)]) {
-        [self.delegate bluetoothControllerDidUpdateState:self];
+    if (_state == CBCentralManagerStatePoweredOn) {
+        [self scanForPeripherals];
     }
+    [self.delegate bluetoothControllerDidUpdateState:self];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
-    if (![peripheral.identifier isEqual:[CBUUID UUIDWithString:BLE_DEVICE_UUID]]) {
-        // TODO: send 'unknown bluetoot hardware'
-    } else if (RSSI.integerValue > 40) {
+    if (![peripheral.identifier.UUIDString isEqualToString:BLE_DEVICE_UUID]) {
+        // TODO: send 'unknown bluetooth hardware'
+    } else if (RSSI.integerValue > -40) {
         // TODO: send 'signal too weak to connect'
     } else {
+        _uartPeripheral = peripheral;
         [central connectPeripheral:peripheral options:nil];
     }
 }
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
     // TODO: send 'connected'
-    _uartPeripheral = peripheral;
     peripheral.delegate = self;
     [peripheral discoverServices:@[[CBUUID UUIDWithString:SERVICE_SERIAL_UUID]]];
 }
@@ -102,6 +103,9 @@ static NSString *CHARACTERISTIC_RXTX_UUID = @"FFE1";
             if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CHARACTERISTIC_RXTX_UUID]]) {
                 _rxtxCharacteristic = characteristic;
                 [peripheral setNotifyValue:YES forCharacteristic:characteristic];
+                _state = CSBluetoothControllerStateConnected;
+                [self.centralManager stopScan];
+                [self.delegate bluetoothControllerDidUpdateState:self];
             }
         }
     } else {
@@ -112,10 +116,10 @@ static NSString *CHARACTERISTIC_RXTX_UUID = @"FFE1";
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     if (!error) {
         if ([characteristic.UUID.UUIDString.uppercaseString isEqualToString:CHARACTERISTIC_RXTX_UUID]) {
-            Byte *byte;
-            for (NSInteger bytePos = 0; bytePos < characteristic.value.length; bytePos++) {
-                [characteristic.value getBytes:&byte range:NSMakeRange(bytePos, 1)];
-                // TODO: handle byte
+            Byte *bytes = (Byte*)characteristic.value.bytes;
+            NSUInteger bytesCount = characteristic.value.length;
+            for (NSInteger bytePos = 0; bytePos < bytesCount; bytePos++) {
+                [self.delegate bluetoothController:self didReceivedByte:bytes[bytePos]];
             }
         }
     } else {

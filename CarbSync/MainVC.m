@@ -10,6 +10,7 @@
 #import "CSBluetoothController.h"
 #import "CSPacketDecoder.h"
 #import "CSSensor.h"
+#import "CSVersion.h"
 #import "CSVacuumView.h"
 #import "CSRSSIView.h"
 
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) CSBluetoothController *bluetoothControler;
 @property (nonatomic, strong) CSPacketDecoder *packetDecoder;
 @property (nonatomic, strong) CSSensor *sensors;
+@property (nonatomic, strong) CSVersion *version;
 @property (nonatomic, strong) CADisplayLink *displayLink;
 @end
 
@@ -33,6 +35,7 @@
     _bluetoothControler.delegate = self;
     
     _sensors = [[CSSensor alloc] initWithUnit:CSSensorUnit_kPa];
+    _version = [[CSVersion alloc] init];
     
     _packetDecoder = [[CSPacketDecoder alloc] init];
     _packetDecoder.delegate = self;
@@ -61,6 +64,9 @@
         case CSBluetoothControllerStateUnauthorized:
             self.rssiView.status = CSRSSIStatus_inactive;
             break;
+        case CSBluetoothControllerStateConnected:
+            [controller sendByte:'v'];
+            break;
             
         case CSBluetoothControllerStateUnknown:
         default:
@@ -82,6 +88,8 @@
 - (id<CSPacketProtocol>)packetDecoder:(CSPacketDecoder *)packetDecoder packetWithCommand:(CSPacketCommand)command {
     if (command == [CSSensor command]) {
         return _sensors;
+    } else if (command == [CSVersion command]) {
+        return _version;
     } else {
         return nil;
     }
@@ -89,6 +97,10 @@
 
 - (void)packetDecoder:(CSPacketDecoder *)packetDecoder packetUpdated:(id<CSPacketProtocol>)packet command:(CSPacketCommand)command {
     if (command == [CSSensor command]) {
+        
+    } else if (command == [CSVersion command]) {
+        [self.bluetoothControler sendByte:'s'];
+    } else {
         
     }
 }

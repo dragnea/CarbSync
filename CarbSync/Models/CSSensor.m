@@ -8,6 +8,9 @@
 
 #import "CSSensor.h"
 
+const int16_t kMinSensorValue = 22;
+const int16_t kMaxSensorValue = 946 - kMinSensorValue;
+
 @implementation CSSensor {
     CSSensorValues sensorValues[4];
 }
@@ -20,14 +23,22 @@
     if (count != 8) {
         // malformed packet
     } else {
-        CSSensorValues sensor;
-        int16_t value;
+        float values[4];
+        float mediumValue = 0.0f;
+        for (int s = 0; s < 4; s++) {
+            int16_t value = (bytes[s * 2] << 8 | bytes[s * 2 + 1]);
+            value = kMaxSensorValue - MIN(kMaxSensorValue, value - kMinSensorValue);
+            values[s] = (float)value / kMaxSensorValue;
+            mediumValue += values[s];
+        }
+        
+        mediumValue = mediumValue / 4.0f;
         for (int s = 0; s < 4; s++) {
             
-            value = bytes[s * 2] << 8 | bytes[s * 2 + 1];
-            sensor = sensorValues[s];
-            
-            sensor.nominalValue = value;
+            float value = sensorValues[s].desiredValue + values[s] - mediumValue;
+            sensorValues[s].minValue = MIN(value, sensorValues[s].minValue);
+            sensorValues[s].nominalValue = value;
+            sensorValues[s].maxValue = MAX(value, sensorValues[s].maxValue);
             
         }
     }
@@ -36,6 +47,9 @@
 - (id)initWithUnit:(CSSensorUnit)unit {
     if (self = [super init]) {
         _unit = unit;
+        for (int i = 0; i < 4; i++) {
+            sensorValues[i] = (CSSensorValues){0.5f, 0.5f, 0.5f, 0.5f};
+        }
     }
     return self;
 }

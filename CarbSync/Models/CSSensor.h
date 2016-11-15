@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, CSSensorUnit) {
     CSSensorUnit_kPa
 };
 
-typedef struct CSSensorValues {
+typedef struct {
     float minValue;
     float nominalValue;
     float desiredValue;

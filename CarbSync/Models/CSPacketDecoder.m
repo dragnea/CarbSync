@@ -98,8 +98,10 @@ const Byte TFESC = 0x84;
     }
     rx_size = 0;
     id<CSPacketProtocol>packet = [self.delegate packetDecoder:self packetWithCommand:command];
-    [packet setBytes:bytes count:packetSize];
-    [self.delegate packetDecoder:self packetUpdated:packet command:command];
+    if (packet) {
+        [packet setBytes:bytes count:packetSize];
+        [self.delegate packetDecoder:self packetUpdated:packet command:command];
+    }
 }
 
 @end
