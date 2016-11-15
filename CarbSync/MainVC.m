@@ -34,7 +34,7 @@
     _bluetoothControler = [[CSBluetoothController alloc] init];
     _bluetoothControler.delegate = self;
     
-    _sensors = [[CSSensor alloc] initWithUnit:CSSensorUnit_kPa];
+    _sensors = [[CSSensor alloc] init];
     _version = [[CSVersion alloc] init];
     
     _packetDecoder = [[CSPacketDecoder alloc] init];
@@ -44,6 +44,25 @@
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
+- (IBAction)vacuumViewTouched:(CSVacuumView *)sender {
+    sender.selected = !sender.selected;
+    for (CSVacuumView *vacuumView in self.vacuumGauges) {
+        if (vacuumView != sender) {
+            vacuumView.selected = NO;
+        }
+    }
+    if (sender.selected) {
+        self.sensors.referenceSensor = sender.tag;
+    } else {
+        self.sensors.referenceSensor = -1;
+    }
+}
+
+- (void)start {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.bluetoothControler sendByte:'v'];
+    });
+}
 
 #pragma mark - CSBluetoothControllerDelegate
 
@@ -64,8 +83,15 @@
         case CSBluetoothControllerStateUnauthorized:
             self.rssiView.status = CSRSSIStatus_inactive;
             break;
+        case CSBluetoothControllerStateScaning:
+            self.rssiView.status = CSRSSIStatus_scaning;
+            break;
+        case CSBluetoothControllerStateConnecting:
+            self.rssiView.status = CSRSSIStatus_connecting;
+            break;
         case CSBluetoothControllerStateConnected:
-            [controller sendByte:'v'];
+            self.rssiView.status = CSRSSIStatus_connected;
+            [self start];
             break;
             
         case CSBluetoothControllerStateUnknown:
@@ -75,8 +101,12 @@
     }
 }
 
-- (void)bluetoothController:(CSBluetoothController *)controller status:(NSString *)status {
-    
+- (void)bluetoothControllerDidUpdateRSSI:(CSBluetoothController *)controller {
+    self.rssiView.rssi = controller.rssi;
+}
+
+- (void)bluetoothController:(CSBluetoothController *)controller error:(NSError *)error {
+    NSLog(@"CSBluetoothController: %@", error);
 }
 
 - (void)bluetoothController:(CSBluetoothController *)controller didReceivedByte:(Byte)byte {
@@ -106,13 +136,12 @@
 }
 
 - (void)packetDecoder:(CSPacketDecoder *)packetDecoder error:(NSError *)error {
-    
+    NSLog(@"CSPacketDecoder: %@", error);
 }
 
 - (void)displayLinkTick:(CADisplayLink *)displayLink {
     for (CSVacuumView *vacuumGauge in self.vacuumGauges) {
-        CSSensorValues values = [self.sensors sensorValuesAtIndex:vacuumGauge.tag];
-        [vacuumGauge updateMinValue:values.minValue value:values.nominalValue desiredValue:values.desiredValue maxValue:values.maxValue];
+        [vacuumGauge updateValues:[self.sensors sensorValuesAtIndex:vacuumGauge.tag]];
     }
 }
 

@@ -15,11 +15,7 @@
 }
 
 - (void)setBytes:(Byte *)bytes count:(int)count {
-    if (count != 2) {
-        // malformed packet
-    } else {
-        _stringVersion = [NSString stringWithCString:(char *)bytes encoding:NSUTF8StringEncoding];
-    }
+    _stringVersion = [NSString stringWithCString:(char *)bytes encoding:NSUTF8StringEncoding];
 }
 
 @end

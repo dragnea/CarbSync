@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CSSensor.h"
+
+typedef NS_ENUM(NSInteger, CSVacuumViewUnit) {
+    CSVacuumViewUnit_kPa
+};
 
 IB_DESIGNABLE
-@interface CSVacuumView : UIView
-@property (nonatomic, strong, readonly) UILabel *indexLabel;
-@property (nonatomic, strong, readonly) UILabel *valueLabel;
+@interface CSVacuumView : UIControl
+@property (nonatomic) IBInspectable CSVacuumViewUnit unit;
 
-- (void)updateMinValue:(CGFloat)minValue value:(CGFloat)value desiredValue:(CGFloat)desiredValue maxValue:(CGFloat)maxValue;
+- (void)updateValues:(CSSensorValues)values;
 
 @end

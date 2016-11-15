@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSErrorDomain const CSBluetoothControllerErrorDomain;
+extern NSInteger const CSBluetoothControllerErrorCode_weakRSSI;
+extern NSInteger const CSBluetoothControllerErrorCode_wrongDevice;
+extern NSInteger const CSBluetoothControllerErrorCode_connectionFailure;
+
 typedef NS_ENUM(NSInteger, CSBluetoothControllerState) {
     CSBluetoothControllerStateUnknown = 0,
     CSBluetoothControllerStateResetting,
@@ -15,6 +20,8 @@ typedef NS_ENUM(NSInteger, CSBluetoothControllerState) {
     CSBluetoothControllerStateUnauthorized,
     CSBluetoothControllerStatePoweredOff,
     CSBluetoothControllerStatePoweredOn,
+    CSBluetoothControllerStateScaning,
+    CSBluetoothControllerStateConnecting,
     CSBluetoothControllerStateConnected
 };
 
@@ -22,8 +29,9 @@ typedef NS_ENUM(NSInteger, CSBluetoothControllerState) {
 
 @protocol CSBluetoothControllerDelegate <NSObject>
 - (void)bluetoothControllerDidUpdateState:(CSBluetoothController *)controller;
-- (void)bluetoothController:(CSBluetoothController *)controller status:(NSString *)status;
+- (void)bluetoothController:(CSBluetoothController *)controller error:(NSError *)error;
 - (void)bluetoothController:(CSBluetoothController *)controller didReceivedByte:(Byte)byte;
+- (void)bluetoothControllerDidUpdateRSSI:(CSBluetoothController *)controller;
 @end
 
 @interface CSBluetoothController : NSObject

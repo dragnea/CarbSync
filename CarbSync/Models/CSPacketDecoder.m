@@ -62,10 +62,19 @@ const Byte TFESC = 0x84;
     return self;
 }
 
+- (void)sendError:(NSError *)error {
+    [self.delegate packetDecoder:self error:error];
+}
+
 - (void)sendErrorCode:(NSInteger)errorCode {
     if ([self.delegate respondsToSelector:@selector(packetDecoder:error:)]) {
-        NSError *error = [NSError errorWithDomain:CSPacketDecodedErrorDomain code:errorCode userInfo:nil];
-        [self.delegate packetDecoder:self error:error];
+        switch (errorCode) {
+            case CSPacketDecoderErrorCode_bufferOverflow:
+                [self sendError:[NSError errorWithDomain:CSPacketDecodedErrorDomain
+                                                    code:errorCode
+                                                userInfo:@{NSLocalizedDescriptionKey: @"Receive buffer overflow"}]];
+                break;
+        }
     }
 }
 

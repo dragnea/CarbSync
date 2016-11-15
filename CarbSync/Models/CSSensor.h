@@ -8,11 +8,10 @@
 
 #import "CSPacket.h"
 
-typedef NS_ENUM(NSInteger, CSSensorUnit) {
-    CSSensorUnit_kPa
-};
+#define CSSensorCount 4
 
 typedef struct {
+    float value;
     float minValue;
     float nominalValue;
     float desiredValue;
@@ -20,9 +19,8 @@ typedef struct {
 } CSSensorValues;
 
 @interface CSSensor : NSObject<CSPacketProtocol>
-@property (nonatomic) CSSensorUnit unit;
+@property (nonatomic) NSInteger referenceSensor;
 
-- (id)initWithUnit:(CSSensorUnit)unit;
 - (CSSensorValues)sensorValuesAtIndex:(NSInteger)index;
 
 @end

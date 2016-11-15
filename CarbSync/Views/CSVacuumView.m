@@ -42,6 +42,7 @@
 }
 
 - (void)setup {
+    _unit = CSVacuumViewUnit_kPa;
     _contentRect = CGRectInset(self.bounds, 3.0, 32.0);
     
     _intervalLayer = [CSAnimatableShapeLayer layer];
@@ -78,26 +79,43 @@
     _valueLabel.minimumScaleFactor = 0.5;
     _valueLabel.adjustsFontSizeToFitWidth = YES;
     [self addSubview:_valueLabel];
-    
-    [self updateMinValue:0.38 value:0.4 desiredValue:0.52 maxValue:0.74];
 }
 
-- (void)updateMinValue:(CGFloat)minValue value:(CGFloat)value desiredValue:(CGFloat)desiredValue maxValue:(CGFloat)maxValue {
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    [self setNeedsDisplay];
+}
+
+- (void)updateValues:(CSSensorValues)values {
     // update interval layer
-    CGFloat minPosY = _contentRect.size.height * MIN(minValue, 1.0);
+    CGFloat minPosY = _contentRect.size.height * MIN(values.minValue, 1.0);
     CGPathRef intervalPath = CGPathCreateWithRect(CGRectMake(_contentRect.origin.x,
                                                              _contentRect.origin.y + minPosY,
                                                              _contentRect.size.width,
-                                                             _contentRect.size.height * MIN(maxValue, 1.0) - minPosY),
+                                                             _contentRect.size.height * MIN(values.maxValue, 1.0) - minPosY),
                                                   NULL);
     _intervalLayer.path = intervalPath;
     CGPathRelease(intervalPath);
     
     // update indicator
-    _indicatorLayer.position = CGPointMake(0.0, _contentRect.size.height * MIN(value, 1.0));
+    _indicatorLayer.position = CGPointMake(0.0, _contentRect.size.height * MIN(values.nominalValue, 1.0));
     
     // update desired indicator
-    _desiredIndicatorLayer.position = CGPointMake(0.0, _contentRect.size.height * MIN(desiredValue, 1.0));
+    _desiredIndicatorLayer.position = CGPointMake(0.0, _contentRect.size.height * MIN(values.desiredValue, 1.0));
+    
+    // update value
+    switch (_unit) {
+        case CSVacuumViewUnit_kPa:
+            self.valueLabel.text = [NSString stringWithFormat:@"-%.1f kPa", 115.0f * values.value];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)setUnit:(CSVacuumViewUnit)unit {
+    _unit = unit;
 }
 
 - (void)layoutSubviews {
@@ -111,8 +129,10 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGContextSetLineWidth(context, 2.0);
-    CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);
+    UIColor *strokeColor = [UIColor darkGrayColor];
+    
+    CGContextSetLineWidth(context, self.selected ? 6.0 : 2.0);
+    CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
     
     // upper border
     CGContextMoveToPoint(context, 0.0, 16.0);
@@ -129,8 +149,8 @@
     CGContextStrokePath(context);
     
     // add side border
-    CGContextSetLineWidth(context, 1.0 / [UIScreen mainScreen].scale);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextSetLineWidth(context, (self.selected ? 2.0 : 1.0) / [UIScreen mainScreen].scale);
+    CGContextSetStrokeColorWithColor(context, [strokeColor colorWithAlphaComponent:0.4].CGColor);
     CGContextMoveToPoint(context, 1.0, 16.0);
     CGContextAddLineToPoint(context, 1.0, rect.size.height - 16.0);
     CGContextMoveToPoint(context, rect.size.width - 1.0, 16.0);
@@ -140,7 +160,7 @@
     // draw gradation
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineWidth(context, 1.0 / [UIScreen mainScreen].scale);
-    CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.8 alpha:1.0].CGColor);
+    CGContextSetStrokeColorWithColor(context, [strokeColor colorWithAlphaComponent:0.2].CGColor);
     for (NSInteger y = 0; y <= 10; y++) {
         CGContextMoveToPoint(context, _contentRect.origin.x + 16.0, _contentRect.origin.y + (_contentRect.size.height / 10.0) * y);
         CGContextAddLineToPoint(context, _contentRect.size.width - 16.0, _contentRect.origin.y + (_contentRect.size.height / 10.0) * y);

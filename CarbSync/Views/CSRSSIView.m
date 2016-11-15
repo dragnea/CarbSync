@@ -26,7 +26,7 @@
     NSInteger rssi = [self.rssi integerValue];
     NSInteger bars;
     
-    if (rssi == 0) {
+    if (rssi == 0 || self.status != CSRSSIStatus_connected) {
         bars = 0; // > 16m or no signal
     } else if (rssi < -64) {
         bars = 1; // 16m
