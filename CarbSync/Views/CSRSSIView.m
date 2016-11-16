@@ -20,6 +20,11 @@
     [self setNeedsDisplay];
 }
 
+- (void)tintColorDidChange {
+    [super tintColorDidChange];
+    [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     

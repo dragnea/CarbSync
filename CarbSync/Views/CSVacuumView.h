@@ -31,6 +31,7 @@ IB_DESIGNABLE
 @interface CSVacuumView : UIControl
 @property (nonatomic) IBInspectable CSVacuumViewUnit unit;
 
++ (NSString *)stringForUnit:(CSVacuumViewUnit)unit;
 - (void)updateValues:(CSSensorValues)values;
 
 @end

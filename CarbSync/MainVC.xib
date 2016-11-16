@@ -1,17 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainVC">
             <connections>
                 <outlet property="rssiView" destination="k1d-NU-m21" id="VOr-Ry-a8q"/>
+                <outlet property="unitButton" destination="Neb-oc-wU1" id="WCq-ES-yZP"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="vacuumGauges" destination="FYX-c7-ar7" id="U3W-9g-w3Q"/>
                 <outletCollection property="vacuumGauges" destination="k3t-4W-8N2" id="Ak3-yc-B7w"/>
@@ -67,8 +68,21 @@
                         <action selector="vacuumViewTouched:" destination="-1" eventType="touchUpInside" id="qY1-l0-XeA"/>
                     </connections>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Neb-oc-wU1">
+                    <rect key="frame" x="8" y="623" width="90" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="I0J-47-5fg"/>
+                        <constraint firstAttribute="width" constant="90" id="KML-fR-gwP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="mmHg"/>
+                    <connections>
+                        <action selector="unitButtonTouched:" destination="-1" eventType="touchUpInside" id="Wgg-80-ert"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="jXI-2Y-YwW" firstAttribute="leading" secondItem="Q42-cU-GQJ" secondAttribute="trailing" constant="8" id="1nw-b6-woF"/>
                 <constraint firstAttribute="trailing" secondItem="YMQ-Hm-RwU" secondAttribute="trailing" constant="8" id="291-r1-Typ"/>
@@ -78,11 +92,13 @@
                 <constraint firstItem="YMQ-Hm-RwU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Kae-hN-Vpw"/>
                 <constraint firstItem="Q42-cU-GQJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Ocn-BV-LQn"/>
                 <constraint firstAttribute="bottom" secondItem="k1d-NU-m21" secondAttribute="bottom" constant="10" id="R88-nN-Sff"/>
+                <constraint firstItem="Neb-oc-wU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="WlP-Ms-9av"/>
                 <constraint firstItem="Q42-cU-GQJ" firstAttribute="bottom" secondItem="FYX-c7-ar7" secondAttribute="bottom" id="XR5-tQ-clM"/>
                 <constraint firstItem="Q42-cU-GQJ" firstAttribute="width" secondItem="FYX-c7-ar7" secondAttribute="width" id="ZwH-D5-q98"/>
                 <constraint firstAttribute="bottom" secondItem="YMQ-Hm-RwU" secondAttribute="bottom" constant="44" id="byq-eT-3NM"/>
                 <constraint firstItem="YMQ-Hm-RwU" firstAttribute="top" secondItem="FYX-c7-ar7" secondAttribute="bottom" constant="46" id="dsi-Aw-YWS"/>
                 <constraint firstItem="k3t-4W-8N2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="eak-JV-Ebx"/>
+                <constraint firstAttribute="bottom" secondItem="Neb-oc-wU1" secondAttribute="bottom" id="hVz-7K-sor"/>
                 <constraint firstAttribute="trailing" secondItem="jXI-2Y-YwW" secondAttribute="trailing" constant="8" id="kzs-pL-hVf"/>
                 <constraint firstItem="jXI-2Y-YwW" firstAttribute="bottom" secondItem="FYX-c7-ar7" secondAttribute="bottom" id="nGT-nf-Fc5"/>
                 <constraint firstItem="jXI-2Y-YwW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="ojQ-MI-mTk"/>

@@ -20,6 +20,17 @@
 
 @implementation CSVacuumView
 
++ (NSString *)stringForUnit:(CSVacuumViewUnit)unit {
+    switch (unit) {
+        case CSVacuumViewUnit_mmHg:
+            return @"mmHg";
+        case CSVacuumViewUnit_mBar:
+            return @"mBar";
+        case CSVacuumViewUnit_kPa:
+        default:
+            return @"kPa";
+    }
+}
 - (id)init {
     if (self = [super init]) {
         [self setup];
@@ -46,7 +57,9 @@
     _contentRect = CGRectInset(self.bounds, 3.0, 32.0);
     
     _intervalLayer = [CSAnimatableShapeLayer layer];
-    _intervalLayer.fillColor = [UIColor colorWithWhite:0.1 alpha:0.1].CGColor;
+    _intervalLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.1].CGColor;
+    _intervalLayer.strokeColor = [self.tintColor colorWithAlphaComponent:0.3].CGColor;
+    _intervalLayer.lineWidth = 1.0 / [UIScreen mainScreen].scale;
     [self.layer addSublayer:_intervalLayer];
     
     _indicatorLayer = [CSAnimatableShapeLayer layer];
@@ -57,7 +70,7 @@
     [self.layer addSublayer:_indicatorLayer];
     
     _desiredIndicatorLayer = [CSAnimatableShapeLayer layer];
-    _desiredIndicatorLayer.fillColor = [UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:0.5].CGColor;
+    _desiredIndicatorLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.5].CGColor;
     CGPathRef desiredIndicatorPath = CGPathCreateWithRect(CGRectMake(_contentRect.origin.x + 2.0, _contentRect.origin.y - 1.0, _contentRect.size.width - 4.0, 2.0), NULL);
     _desiredIndicatorLayer.path = desiredIndicatorPath;
     CGPathRelease(desiredIndicatorPath);
@@ -79,6 +92,14 @@
     _valueLabel.minimumScaleFactor = 0.5;
     _valueLabel.adjustsFontSizeToFitWidth = YES;
     [self addSubview:_valueLabel];
+}
+
+- (void)tintColorDidChange {
+    [super tintColorDidChange];
+    _intervalLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.1].CGColor;
+    _intervalLayer.strokeColor = [self.tintColor colorWithAlphaComponent:0.3].CGColor;
+    _desiredIndicatorLayer.fillColor = [self.tintColor colorWithAlphaComponent:0.5].CGColor;
+    [self setNeedsDisplay];
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -106,13 +127,13 @@
     // update value. The full scale of the sensor is -115kPa. All units are calculated for this value
     switch (_unit) {
         case CSVacuumViewUnit_kPa:
-            self.valueLabel.text = [NSString stringWithFormat:@"%.1f kPa", 115.0f * values.value];
+            self.valueLabel.text = [NSString stringWithFormat:@"%.1f", 115.0f * values.value];
             break;
         case CSVacuumViewUnit_mmHg:
-            self.valueLabel.text = [NSString stringWithFormat:@"%.0f mmHg", 862.57093545f * values.value];
+            self.valueLabel.text = [NSString stringWithFormat:@"%.0f", 862.57093545f * values.value];
             break;
         case CSVacuumViewUnit_mBar:
-            self.valueLabel.text = [NSString stringWithFormat:@"%.0f mBar", 1150.0f * values.value];
+            self.valueLabel.text = [NSString stringWithFormat:@"%.0f", 1150.0f * values.value];
             break;
             
         default:
@@ -135,9 +156,12 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    UIColor *strokeColor = [UIColor darkGrayColor];
+    UIColor *strokeColor = self.tintColor;
     
-    CGContextSetLineWidth(context, self.selected ? 6.0 : 2.0);
+    CGContextSetFillColorWithColor(context, [strokeColor colorWithAlphaComponent:self.selected ? 0.05 : 0.01].CGColor);
+    CGContextFillRect(context, rect);
+    
+    CGContextSetLineWidth(context, self.selected ? 4.0 : 2.0);
     CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
     
     // upper border

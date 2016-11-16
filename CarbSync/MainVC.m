@@ -17,6 +17,7 @@
 @interface MainVC ()<CSBluetoothControllerDelegate, CSPacketDecoderDelegate>
 @property (nonatomic, strong) IBOutletCollection(CSVacuumView) NSArray <CSVacuumView *>*vacuumGauges;
 @property (nonatomic, weak) IBOutlet CSRSSIView *rssiView;
+@property (nonatomic, weak) IBOutlet UIButton *unitButton;
 @property (nonatomic, strong) NSTimer *rssiTimer;
 @property (nonatomic, strong) NSTimer *displayTimer;
 @property (nonatomic, strong) CSBluetoothController *bluetoothControler;
@@ -43,9 +44,16 @@
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkTick:)];
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     
+    [self setUnit:[[NSUserDefaults standardUserDefaults] integerForKey:@"display_unit"]];
+}
+
+- (void)setUnit:(CSVacuumViewUnit)unit {
     for (CSVacuumView *vacuumGauge in self.vacuumGauges) {
-        vacuumGauge.unit = CSVacuumViewUnit_mmHg;
+        vacuumGauge.unit = unit;
     }
+    [self.unitButton setTitle:[CSVacuumView stringForUnit:unit] forState:UIControlStateNormal];
+    [[NSUserDefaults standardUserDefaults] setInteger:unit forKey:@"display_unit"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)vacuumViewTouched:(CSVacuumView *)sender {
@@ -60,6 +68,28 @@
     } else {
         self.sensors.referenceSensor = -1;
     }
+}
+
+- (IBAction)unitButtonTouched:(id)sender {
+    UIAlertController *unitActionSheet = [UIAlertController alertControllerWithTitle:@"Select unit" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [unitActionSheet addAction:[UIAlertAction actionWithTitle:[CSVacuumView stringForUnit:CSVacuumViewUnit_kPa]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self setUnit:CSVacuumViewUnit_kPa];
+                                                      }]];
+    [unitActionSheet addAction:[UIAlertAction actionWithTitle:[CSVacuumView stringForUnit:CSVacuumViewUnit_mmHg]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self setUnit:CSVacuumViewUnit_mmHg];
+                                                      }]];
+    [unitActionSheet addAction:[UIAlertAction actionWithTitle:[CSVacuumView stringForUnit:CSVacuumViewUnit_mBar]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self setUnit:CSVacuumViewUnit_mBar];
+                                                      }]];
+    [unitActionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:unitActionSheet animated:YES completion:nil];
+    
 }
 
 - (void)start {
