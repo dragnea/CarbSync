@@ -103,10 +103,16 @@
     // update desired indicator
     _desiredIndicatorLayer.position = CGPointMake(0.0, _contentRect.size.height * MIN(values.desiredValue, 1.0));
     
-    // update value
+    // update value. The full scale of the sensor is -115kPa. All units are calculated for this value
     switch (_unit) {
         case CSVacuumViewUnit_kPa:
-            self.valueLabel.text = [NSString stringWithFormat:@"-%.1f kPa", 115.0f * values.value];
+            self.valueLabel.text = [NSString stringWithFormat:@"%.1f kPa", 115.0f * values.value];
+            break;
+        case CSVacuumViewUnit_mmHg:
+            self.valueLabel.text = [NSString stringWithFormat:@"%.0f mmHg", 862.57093545f * values.value];
+            break;
+        case CSVacuumViewUnit_mBar:
+            self.valueLabel.text = [NSString stringWithFormat:@"%.0f mBar", 1150.0f * values.value];
             break;
             
         default:

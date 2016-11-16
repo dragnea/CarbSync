@@ -21,8 +21,8 @@ const int16_t kMaxSensorValue = 946 - kMinSensorValue;
     return 's';
 }
 
-float smooth(float oldValue, float newValue, float smooth_factor) {
-    return newValue * smooth_factor + oldValue * (1.0f - smooth_factor);
+float smooth(float oldValue, float newValue, int samples) {
+    return newValue / samples + oldValue * (1.0f - 1.0f / samples);
 }
 
 - (void)setBytes:(Byte *)bytes count:(int)count {
@@ -46,9 +46,9 @@ float smooth(float oldValue, float newValue, float smooth_factor) {
         }
         for (int s = 0; s < CSSensorCount; s++) {
             float nominalValue = sensorValues[s].desiredValue + sensorValues[s].value - averageValue;
-            sensorValues[s].minValue = MIN(nominalValue, smooth(sensorValues[s].minValue, nominalValue, 0.04f));
+            sensorValues[s].minValue = MIN(nominalValue, smooth(sensorValues[s].minValue, nominalValue, 25));
             sensorValues[s].nominalValue = nominalValue;
-            sensorValues[s].maxValue = MAX(nominalValue, smooth(sensorValues[s].maxValue, nominalValue, 0.04f));
+            sensorValues[s].maxValue = MAX(nominalValue, smooth(sensorValues[s].maxValue, nominalValue, 25));
         }
     }
 }

@@ -10,7 +10,21 @@
 #import "CSSensor.h"
 
 typedef NS_ENUM(NSInteger, CSVacuumViewUnit) {
-    CSVacuumViewUnit_kPa
+    
+    /**
+     Default unit
+     */
+    CSVacuumViewUnit_kPa,
+    
+    /**
+     1 kPa = 7.50061683 mmHg
+     */
+    CSVacuumViewUnit_mmHg,
+    
+    /**
+     1 kPa = 10 mBar
+     */
+    CSVacuumViewUnit_mBar
 };
 
 IB_DESIGNABLE

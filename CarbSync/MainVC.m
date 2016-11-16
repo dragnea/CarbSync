@@ -42,6 +42,10 @@
     
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkTick:)];
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    
+    for (CSVacuumView *vacuumGauge in self.vacuumGauges) {
+        vacuumGauge.unit = CSVacuumViewUnit_mmHg;
+    }
 }
 
 - (IBAction)vacuumViewTouched:(CSVacuumView *)sender {
